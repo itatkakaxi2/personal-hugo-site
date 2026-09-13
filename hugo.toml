@@ -8,13 +8,13 @@ mainSections = ['posts']
     disableSpecial1stPost = true
 
 [[menu.main]]
-    identifier = 'about'
-    name = '关于我'
-    url = 'about/'
-    weight = 10
-
-[[menu.main]]
     identifier = 'micropost'
     name = '微记'
     url = 'micropost/'
+    weight = 10
+
+[[menu.main]]
+    identifier = 'about'
+    name = '关于我'
+    url = 'about/'
     weight = 20
