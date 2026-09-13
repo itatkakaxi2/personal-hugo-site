@@ -13,7 +13,7 @@ GC(Garbage Collector) 是JVM(Java Virtual Machine)虚拟机的所提供的重要
 
 在Z GC之前，主要的GC实现STW会随着堆区大小的增大而变长，这对于一些大堆Java应用且其实时响应性要求较高的场景，GC变成影响应用性能的关键瓶颈。例如金融业务场景下的实时风控应用，一个交易请求打进去，要求100ms内就要给出对应的风控应答，如果应用本身STW就有100ms，那么无论怎样么优化应用逻辑本身，都无法避免地无法达到应答时效要求。Z GC带来两个可靠的特性：（1）单次GC的STW时间能够降稳定地控制在10ms以内（2）STW时长不会随堆区大小的增长而变长。
 
-了解Z GC算法的实现，直接查看对应的[源码实现](https://github.com/openjdk/zgc/tree/master/src/hotspot/share/gc/z)(25KLOC源码）需要较长的时间去阅读并理清对应的工作模型。 对于开发人员来说，我们希望能够有一个简化的Z GC工作模型作为指导，能够对Z GC的实际工作的上下文有进一步的理解。查看了中文网络上的一些资料，一部分是对Z GC的简单介绍，一部分是直接的源码分析，缺少一个中间层，介绍Z GC工作模型的介绍，本文基于ACM论文<Deep Dive into ZGC: A Modern Garbage Collector in OpenJDK>，介绍Z GC的具体工作模型。文章约8500字，常规阅读时间约40分钟。
+了解Z GC算法的实现，直接查看对应的[源码实现](https://github.com/openjdk/zgc/tree/master/src/hotspot/share/gc/z)(25KLOC源码）需要较长的时间去阅读并理清对应的工作模型。 对于开发人员来说，我们希望能够有一个简化的Z GC工作模型作为指导，能够对Z GC的实际工作的上下文有进一步的理解。查看了中文网络上的一些资料，一部分是对Z GC的简单介绍，一部分是直接的源码分析，缺少一个中间层，介绍Z GC工作模型的介绍，本文基于ACM论文《Deep Dive into ZGC: A Modern Garbage Collector in OpenJDK》，介绍Z GC的具体工作模型。文章约8500字，常规阅读时间约40分钟。
 
 ## 基础知识
 

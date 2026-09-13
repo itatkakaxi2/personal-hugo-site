@@ -1,4 +1,4 @@
-baseURL = 'http://localhost:1313/'
+baseURL = 'https://itatkakaxi2.github.io/personal-hugo-site/'
 languageCode = 'en-us'
 title = "AI Hub - Roy's Summary"
 theme = 'PaperMod'
